@@ -11,16 +11,6 @@ class UserRepository implements IUsersRepository {
     this.repository = getRepository(User);
   }
 
-  findByEmail(email: string): Promise<User> {
-    const user = this.repository.findOne({
-      where: {
-        email,
-      },
-    });
-
-    return user;
-  }
-
   async create({
     name,
     email,
@@ -35,6 +25,22 @@ class UserRepository implements IUsersRepository {
     });
 
     await this.repository.save(user);
+  }
+
+  async findById(id: string): Promise<User> {
+    const user = await this.repository.findOne(id);
+
+    return user;
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    return user;
   }
 }
 
