@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { AppError } from "../../../errors/AppError";
+import { deleteFile } from "../../../utils/file";
 import { IUsersRepository } from "../../accounts/repositories/IUsersRepository";
 
 interface IRequest {
@@ -18,8 +18,8 @@ class UpdateUserAvatarUseCase {
   async execute({ user_id, avatar_file }: IRequest): Promise<void> {
     const user = await this.usersRepository.findById(user_id);
 
-    if (!user) {
-      throw new AppError("User does not exists", 401);
+    if (user.avatar) {
+      await deleteFile(`/tmp/avatar/${user.avatar}`);
     }
 
     user.avatar = avatar_file;
