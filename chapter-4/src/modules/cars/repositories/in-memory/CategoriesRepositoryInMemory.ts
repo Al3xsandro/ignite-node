@@ -1,5 +1,8 @@
-import { Category } from "../../entities/Category";
-import { ICategoriesRepository, ICategoryDTO } from "../ICategoriesRepository";
+import { Category } from "@modules/cars/entities/Category";
+import {
+  ICategoriesRepository,
+  ICategoryDTO,
+} from "@modules/cars/repositories/ICategoriesRepository";
 
 class CategoriesRepositoryInMemory implements ICategoriesRepository {
   constructor(private categoriesRepository: Category[] = []) {}
