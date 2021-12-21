@@ -6,12 +6,6 @@ import { ICarsRepository } from "../ICarsRepository";
 class CarsRepositoryInMemory implements ICarsRepository {
   cars: Car[] = [];
 
-  async findByLicensePlate(license_plate: string): Promise<Car> {
-    const car = this.cars.find((car) => car.license_plate === license_plate);
-
-    return car;
-  }
-
   async create({
     brand,
     category_id,
@@ -36,6 +30,31 @@ class CarsRepositoryInMemory implements ICarsRepository {
     this.cars.push(car);
 
     return car;
+  }
+
+  async findByLicensePlate(license_plate: string): Promise<Car> {
+    const car = this.cars.find((car) => car.license_plate === license_plate);
+
+    return car;
+  }
+
+  async findAvaliable(
+    category_id?: string,
+    brand?: string,
+    name?: string
+  ): Promise<Car[]> {
+    const all = this.cars.filter((car) => {
+      if (
+        car.avaliable === true ||
+        (brand && car.brand === brand) ||
+        (category_id && car.category_id === category_id) ||
+        (name && car.name === name)
+      ) {
+        return car;
+      }
+      return null;
+    });
+    return all;
   }
 }
 
