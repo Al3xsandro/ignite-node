@@ -25,15 +25,17 @@
         "import/no-unresolved": "error",
         "prettier/prettier": "error",
         "@typescript-eslint/naming-convention": [
-        "error",
-        {
-            "selector": "interface",
-            "format": ["PascalCase"],
-            "custom": {
-            "regex": "^I[A-Z]",
-            "match": true
+            "error",
+            {
+                "selector": "interface",
+                "format": [
+                    "PascalCase"
+                ],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
             }
-        }
         ],
         "class-methods-use-this": "off",
         "import/prefer-default-export": "off",
@@ -50,17 +52,33 @@
             }
         ],
         "import-helpers/order-imports": [
-        "warn",
-        {
-            "newlinesBetween": "always",
-            "groups": ["module", "/^@/", ["parent", "sibling", "index"]],
-            "alphabetize": { "order": "asc", "ignoreCase": true }
-        }
+            "warn",
+            {
+                "newlinesBetween": "always",
+                "groups": [
+                    "module",
+                    "/^@/",
+                    [
+                        "parent",
+                        "sibling",
+                        "index"
+                    ]
+                ],
+                "alphabetize": {
+                    "order": "asc",
+                    "ignoreCase": true
+                }
+            }
         ],
         "import/no-extraneous-dependencies": [
             "error",
-            { "devDependencies": ["**/*.spec.ts"] }
-        ],
+            {
+                "devDependencies": [
+                    "**/*.spec.js",
+                    "**/*.spec.ts"
+                ]
+            }
+        ]
     },
     "settings": {
         "import/resolver": {
