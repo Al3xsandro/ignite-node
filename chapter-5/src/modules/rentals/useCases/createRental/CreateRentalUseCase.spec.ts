@@ -54,13 +54,13 @@ describe("Create Rental", () => {
       expected_return_date: dayAdd24hours,
     });
 
-    expect(async () => {
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         car_id: "121212",
         user_id: "12345",
         expected_return_date: dayAdd24hours,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError("There's a rental in progress for user"));
   });
 
   it("should not be able to create a new rental if there is another open to the car", async () => {
@@ -70,22 +70,22 @@ describe("Create Rental", () => {
       expected_return_date: dayAdd24hours,
     });
 
-    expect(async () => {
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         car_id: "test",
         user_id: "341",
         expected_return_date: dayAdd24hours,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError("Car is unavailable"));
   });
 
   it("should not be able to create a new rental with invalid return time", async () => {
-    expect(async () => {
-      await createRentalUseCase.execute({
+    await expect(
+      createRentalUseCase.execute({
         car_id: "test",
         user_id: "321",
         expected_return_date: dayjs().toDate(),
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError("Invalid return time!"));
   });
 });
