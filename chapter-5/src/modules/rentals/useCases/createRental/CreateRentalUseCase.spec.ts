@@ -17,6 +17,7 @@ describe("Create Rental", () => {
 
   beforeEach(() => {
     rentalsRepositoryInMemory = new RentalsRepositoryInMemory();
+    carsRepositoryInMemory = new CarsRepositoryInMemory();
     dateProvider = new DayjsDateProvider();
     createRentalUseCase = new CreateRentalUseCase(
       rentalsRepositoryInMemory,
@@ -26,8 +27,18 @@ describe("Create Rental", () => {
   });
 
   it("should be able to create a new rental", async () => {
+    const car = await carsRepositoryInMemory.create({
+      name: "Test",
+      description: "Car test",
+      daily_rate: 100,
+      license_plate: "test",
+      fine_amount: 40,
+      category_id: "1234",
+      brand: "brand",
+    });
+
     const rental = await createRentalUseCase.execute({
-      car_id: "12345",
+      car_id: car.id,
       user_id: "12345",
       expected_return_date: dayAdd24hours,
     });
@@ -37,15 +48,15 @@ describe("Create Rental", () => {
   });
 
   it("should not be able to create a new rental if there is another open to the user", async () => {
-    await createRentalUseCase.execute({
-      car_id: "12345",
+    await rentalsRepositoryInMemory.create({
+      car_id: "1111",
       user_id: "12345",
       expected_return_date: dayAdd24hours,
     });
 
     expect(async () => {
       await createRentalUseCase.execute({
-        car_id: "12345",
+        car_id: "121212",
         user_id: "12345",
         expected_return_date: dayAdd24hours,
       });
@@ -53,16 +64,16 @@ describe("Create Rental", () => {
   });
 
   it("should not be able to create a new rental if there is another open to the car", async () => {
-    await createRentalUseCase.execute({
+    await rentalsRepositoryInMemory.create({
       car_id: "test",
-      user_id: "123",
+      user_id: "12345",
       expected_return_date: dayAdd24hours,
     });
 
     expect(async () => {
       await createRentalUseCase.execute({
         car_id: "test",
-        user_id: "321",
+        user_id: "341",
         expected_return_date: dayAdd24hours,
       });
     }).rejects.toBeInstanceOf(AppError);

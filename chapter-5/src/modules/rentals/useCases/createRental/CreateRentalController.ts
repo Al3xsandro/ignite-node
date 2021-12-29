@@ -12,8 +12,8 @@ class CreateRentalController {
 
     const rental = await createRentalUseCase.execute({
       car_id,
-      expected_return_date,
       user_id: id,
+      expected_return_date,
     });
 
     return response.status(201).json(rental);
